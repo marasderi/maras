@@ -553,3 +553,44 @@ table th {
 .favorite-btn.active {
     color: var(--color-accent); /* Kırmızı kalp */
 }
+/* === REPORTS & WIDGETS === */
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+.report-widget {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.report-widget h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+.report-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.report-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    border-bottom: 1px solid #f5f5f5;
+}
+.report-list li:last-child {
+    border-bottom: none;
+}
+.report-list li span:first-child {
+    font-weight: 500;
+}
+.report-value {
+    font-weight: 700;
+    color: var(--color-primary);
+}
