@@ -526,3 +526,30 @@ table th {
 .status-btn.inactive {
     background-color: #6c757d;
 }
+/* === FAVORITE BUTTON === */
+.product-image {
+    position: relative; /* Butonu konumlandırmak için */
+}
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    color: #ccc;
+    transition: all 0.3s ease;
+}
+.favorite-btn:hover {
+    background-color: white;
+    transform: scale(1.1);
+}
+.favorite-btn.active {
+    color: var(--color-accent); /* Kırmızı kalp */
+}
