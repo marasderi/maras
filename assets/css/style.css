@@ -494,3 +494,35 @@ table th {
     line-height: 1.7;
     color: #555;
 }
+/* === ADMIN PRODUCT MANAGEMENT === */
+.admin-search-form {
+    display: flex;
+    gap: 10px;
+}
+.admin-search-form input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.admin-search-form button {
+    padding: 10px 15px;
+    border: none;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.status-btn {
+    padding: 5px 12px;
+    border-radius: 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+}
+.status-btn.active {
+    background-color: #28a745;
+}
+.status-btn.inactive {
+    background-color: #6c757d;
+}
