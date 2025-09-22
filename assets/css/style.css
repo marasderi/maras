@@ -411,3 +411,86 @@ table th {
 .role-form button:hover {
     background-color: #218838;
 }
+/* === GENERAL PAGE & SECTION TITLES === */
+.page-header {
+    text-align: center;
+    padding: 20px 0 40px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 40px;
+}
+.page-header h1 { font-size: 3em; margin-bottom: 10px; }
+.page-header p { font-size: 1.2em; color: #777; }
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.section-title h2 {
+    display: inline-block;
+    border-bottom: 3px solid var(--color-primary);
+    padding-bottom: 10px;
+}
+
+/* === STORE GRID & CARD === */
+.store-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+.store-card-link { text-decoration: none; color: inherit; }
+.store-card {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+.store-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.store-logo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.store-info h3 { margin-top: 0; }
+.store-info p {
+    flex-grow: 1;
+    color: #555;
+    font-size: 14px;
+}
+.store-info span {
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+/* === STORE PROFILE HEADER === */
+.store-profile-header {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    padding: 40px;
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    margin-bottom: 50px;
+}
+.store-profile-logo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.store-profile-info h1 {
+    font-size: 2.5em;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.store-profile-info p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #555;
+}
