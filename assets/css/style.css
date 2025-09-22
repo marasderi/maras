@@ -348,3 +348,43 @@ table th {
 .sidebar .filter-group ul li.active a {
     padding-left: 10px;
 }
+/* === ADMIN PANEL === */
+.admin-header {
+    background-color: #343a40; /* Koyu header */
+}
+.admin-header .logo a, .admin-header .main-nav a {
+    color: var(--color-white);
+}
+.admin-header .main-nav a:hover {
+    color: var(--color-primary);
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.stat-card {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.stat-card h3 {
+    margin-top: 0;
+    font-size: 16px;
+    color: #6c757d;
+}
+.stat-card p {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0;
+}
+.admin-content-split {
+    display: flex;
+    gap: 30px;
+}
+.admin-content-split .table-container { flex: 2; }
+.admin-content-split .form-container-split { flex: 1; }
