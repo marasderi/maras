@@ -28,7 +28,8 @@
     <li><a href="<?php echo SITE_URL; ?>/vendor/">Satıcı Paneli</a></li>
 <?php endif; ?>
                     <?php // --- YENİ EKLENEN KISIM BİTİŞ --- ?>
-
+<li><a href="<?php echo SITE_URL; ?>/favorites.php">Favorilerim</a></li>
+<li>Merhaba, <?php echo htmlspecialchars($_SESSION['username']); ?>!</li>
                     <li>Merhaba, <?php echo htmlspecialchars($_SESSION['username']); ?>!</li>
                     <li><a href="<?php echo SITE_URL; ?>/logout.php">Çıkış Yap</a></li>
 
