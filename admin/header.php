@@ -37,7 +37,7 @@ if ($_SESSION['user_role'] !== 'admin') {
                 <li><a href="<?php echo SITE_URL; ?>/admin/index.php">Anasayfa</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/admin/users.php">Üyeler</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/admin/categories.php">Kategoriler</a></li>
-                <li><a href="#">Ürünler</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/admin/products.php">Ürünler</a></li>
                 <li><a href="<?php echo SITE_URL; ?>" target="_blank">Siteyi Görüntüle</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/logout.php">Çıkış Yap</a></li>
             </ul>
