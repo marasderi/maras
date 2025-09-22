@@ -1,0 +1,39 @@
+//Ürün Listeleme ve Detay Sayfaları
+ Örnek Ürünleri Veritabanına Ekleme
+
+Ürünleri listeleyebilmek için önce veritabanında birkaç ürünümüz olması gerekiyor. Sitenin cPanel'inden phpMyAdmin'e git, deri_pazar veritabanını seç ve SQL sekmesine aşağıdaki kodu yapıştırıp çalıştır.
+
+Bu kod, sisteme 2 farklı satıcıdan 4 adet örnek ürün ekleyecektir. (Önce satıcıları users ve vendors tablolarına ekler, sonra ürünleri products tablosuna.)
+
+Çalıştırılacak SQL Kodu:
+
+-- ÖRNEK SATICI 1 OLUŞTURMA
+INSERT INTO `users` (`username`, `email`, `password`, `role`) VALUES
+('Deri Ustas_ı', 'satici1@deripazari.com', '$2y$10$9.0DBkG.9i.tL2u2T5K3E.SAOMl5wBCgI2K/CoSxd25j6y0CNEHk2', 'vendor');
+
+SET @satici1_user_id = LAST_INSERT_ID();
+
+INSERT INTO `vendors` (`user_id`, `store_name`, `store_description`) VALUES
+(@satici1_user_id, 'Deri Atölyesi', 'El yapımı, kişiye özel tasarımlar sunan butik bir atölyeyiz.');
+
+SET @satici1_vendor_id = LAST_INSERT_ID();
+
+
+-- ÖRNEK SATICI 2 OLUŞTURMA
+INSERT INTO `users` (`username`, `email`, `password`, `role`) VALUES
+('Maraş Deri', 'satici2@deripazari.com', '$2y$10$9.0DBkG.9i.tL2u2T5K3E.SAOMl5wBCgI2K/CoSxd25j6y0CNEHk2', 'vendor');
+
+SET @satici2_user_id = LAST_INSERT_ID();
+
+INSERT INTO `vendors` (`user_id`, `store_name`, `store_description`) VALUES
+(@satici2_user_id, 'Maraş Geleneksel Deri', 'Yılların tecrübesiyle geleneksel yöntemlerle üretim yapıyoruz.');
+
+SET @satici2_vendor_id = LAST_INSERT_ID();
+
+
+-- ÖRNEK ÜRÜNLERİ EKLEME
+INSERT INTO `products` (`vendor_id`, `category_id`, `name`, `description`, `price`, `color`, `image`, `external_url`) VALUES
+(@satici1_vendor_id, 1, 'Vintage Pilot Deri Ceket', 'Hakiki kuzu derisinden üretilmiş, eskitme görünümlü pilot ceketi. Soğuk havalar için ideal.', '1850.00', 'Kahverengi, Siyah', 'product1.jpg', 'https://www.ornek-magaza.com/urun-linki-1'),
+(@satici2_vendor_id, 2, 'El Yapımı Deri Omuz Çantası', 'Tamamen el dikişiyle üretilmiş, rustik tasarımlı omuz çantası. Günlük kullanım için çok şık.', '780.00', 'Taba', 'product2.jpg', 'https://www.ornek-magaza.com/urun-linki-2'),
+(@satici2_vendor_id, 4, 'Minimalist Deri Kartlık Cüzdan', 'İnce ve modern tasarımlı, 6 kart kapasiteli hakiki dana derisi cüzdan.', '250.00', 'Siyah', 'product3.jpg', 'https://www.ornek-magaza.com/urun-linki-3'),
+(@satici1_vendor_id, 3, 'Klasik Deri Makosen Ayakkabı', 'İtalyan kesim, konforlu ve şık makosen. Hem günlük hem de özel günler için uygun.', '1200.00', 'Kahverengi', 'product4.jpg', 'https://www.ornek-magaza.com/urun-linki-4');
