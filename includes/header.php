@@ -22,9 +22,11 @@
                 <?php if (isset($_SESSION['user_id'])): // Kullanıcı giriş yapmışsa burası çalışır ?>
                     
                     <?php // --- YENİ EKLENEN KISIM BAŞLANGIÇ --- ?>
-                    <?php if ($_SESSION['user_role'] === 'vendor'): // Giriş yapan kullanıcının rolü 'vendor' ise bu linki göster ?>
-                        <li><a href="<?php echo SITE_URL; ?>/vendor/">Satıcı Paneli</a></li>
-                    <?php endif; ?>
+                   <?php if ($_SESSION['user_role'] === 'admin'): ?>
+    <li><a href="<?php echo SITE_URL; ?>/admin/">Yönetim Paneli</a></li>
+<?php elseif ($_SESSION['user_role'] === 'vendor'): ?>
+    <li><a href="<?php echo SITE_URL; ?>/vendor/">Satıcı Paneli</a></li>
+<?php endif; ?>
                     <?php // --- YENİ EKLENEN KISIM BİTİŞ --- ?>
 
                     <li>Merhaba, <?php echo htmlspecialchars($_SESSION['username']); ?>!</li>
