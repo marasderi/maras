@@ -17,8 +17,10 @@ $sql = "SELECT p.*, c.name as category_name, v.store_name, v.store_description
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$product_id]);
-$product = $stmt->fetch();
-
+if ($product) {
+    $update_views_stmt = $pdo->prepare("UPDATE products SET views = views + 1 WHERE id = ?");
+    $update_views_stmt->execute([$product_id]);
+}
 // Eğer ürün bulunamazsa
 if (!$product) {
     die("Ürün bulunamadı veya pasif durumda.");
