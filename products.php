@@ -1,49 +1,120 @@
 <?php
 include 'includes/header.php';
 
-// Temel SQL Sorgusu
+// --- FİLTRELEME İÇİN VERİLERİ HAZIRLA ---
+
+// URL'den gelen GET parametrelerini güvenli bir şekilde alalım.
+$category_id = isset($_GET['category']) ? intval($_GET['category']) : 0;
+$sort_order = $_GET['sort'] ?? 'newest'; // Varsayılan: en yeni
+$search_term = $_GET['search'] ?? '';
+
+// --- DİNAMİK SQL SORGUSUNU OLUŞTUR ---
+
+// Sorgunun temel, değişmeyen kısmı
 $sql = "SELECT p.*, c.name as category_name, v.store_name 
         FROM products p
         JOIN categories c ON p.category_id = c.id
         JOIN vendors v ON p.vendor_id = v.id
         WHERE p.is_active = 1";
 
-// TODO: Filtreleme mantığı buraya eklenecek
+// PDO'da prepared statements için kullanılacak parametre dizisi
+$params = [];
 
-// Şimdilik tüm ürünleri çekiyoruz
+// Kategori filtresi eklendiyse
+if ($category_id > 0) {
+    $sql .= " AND p.category_id = ?";
+    $params[] = $category_id;
+}
+
+// Arama terimi girildiyse (ürün adı VEYA açıklamasında ara)
+if (!empty($search_term)) {
+    $sql .= " AND (p.name LIKE ? OR p.description LIKE ?)";
+    $params[] = "%" . $search_term . "%";
+    $params[] = "%" . $search_term . "%";
+}
+
+// Sıralama mantığı
+// SQL Injection'ı önlemek için sıralama değerini beyaz listeye alıyoruz (whitelist)
+$orderBy = " ORDER BY p.created_at DESC"; // Varsayılan
+if ($sort_order == 'price_asc') {
+    $orderBy = " ORDER BY p.price ASC";
+} elseif ($sort_order == 'price_desc') {
+    $orderBy = " ORDER BY p.price DESC";
+}
+$sql .= $orderBy;
+
+
+// Hazırlanan sorguyu çalıştır
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute($params);
 $products = $stmt->fetchAll();
+
+// Kenar çubuğundaki kategori listesi için kategorileri çek
+$categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll();
 
 ?>
 
 <div class="page-content">
     <aside class="sidebar">
         <h3>Filtrele</h3>
-        <div class="filter-group">
-            <h4>Kategori</h4>
-            <ul>
-                <li><a href="#">Tümü</a></li>
-                <?php
-                    // Kategorileri veritabanından çek ve listele
-                    $cat_stmt = $pdo->query("SELECT * FROM categories ORDER BY name ASC");
-                    while ($category = $cat_stmt->fetch()) {
-                        echo '<li><a href="#">' . htmlspecialchars($category['name']) . '</a></li>';
-                    }
-                ?>
-            </ul>
-        </div>
-        <div class="filter-group">
-            <h4>Fiyat Aralığı</h4>
-            <input type="range" min="0" max="5000" value="5000">
-        </div>
-        <div class="filter-group">
-            <h4>Renk</h4>
+        
+        <form action="products.php" method="GET" class="filter-form">
+            <div class="filter-group">
+                <h4>Arama</h4>
+                <input type="search" name="search" placeholder="Ürün adı ara..." value="<?php echo htmlspecialchars($search_term); ?>">
             </div>
+
+            <div class="filter-group">
+                <h4>Kategori</h4>
+                <ul>
+                    <li class="<?php if ($category_id == 0) echo 'active'; ?>">
+                        <a href="products.php">Tümü</a>
+                    </li>
+                    <?php foreach ($categories as $category): ?>
+                        <li class="<?php if ($category_id == $category['id']) echo 'active'; ?>">
+                            <a href="products.php?category=<?php echo $category['id']; ?>">
+                                <?php echo htmlspecialchars($category['name']); ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            
+            <?php if ($category_id > 0): ?>
+                <input type="hidden" name="category" value="<?php echo $category_id; ?>">
+            <?php endif; ?>
+            <?php if (!empty($search_term)): ?>
+                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search_term); ?>">
+            <?php endif; ?>
+
+            <div class="filter-group">
+                 <h4>Sırala</h4>
+                 <select name="sort" onchange="this.form.submit()">
+                    <option value="newest" <?php if ($sort_order == 'newest') echo 'selected'; ?>>En Yeni Ürünler</option>
+                    <option value="price_asc" <?php if ($sort_order == 'price_asc') echo 'selected'; ?>>Fiyata Göre Artan</option>
+                    <option value="price_desc" <?php if ($sort_order == 'price_desc') echo 'selected'; ?>>Fiyata Göre Azalan</option>
+                 </select>
+            </div>
+            
+            <button type="submit" class="btn">Filtrele</button>
+
+        </form>
     </aside>
 
     <section class="main-content">
-        <h2>Tüm Ürünler</h2>
+        <h2>
+            <?php
+            // Sayfa başlığını filtreye göre dinamik yapalım
+            if ($category_id > 0) {
+                foreach ($categories as $cat) { if ($cat['id'] == $category_id) echo htmlspecialchars($cat['name']); }
+            } elseif (!empty($search_term)) {
+                echo '"' . htmlspecialchars($search_term) . '" için arama sonuçları';
+            } else {
+                echo 'Tüm Ürünler';
+            }
+            ?>
+        </h2>
+        
         <div class="product-grid">
             <?php if ($products): ?>
                 <?php foreach ($products as $product): ?>
@@ -61,11 +132,10 @@ $products = $stmt->fetchAll();
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Gösterilecek ürün bulunamadı.</p>
+                <p>Aradığınız kriterlere uygun ürün bulunamadı.</p>
             <?php endif; ?>
         </div>
     </section>
 </div>
-
 
 <?php include 'includes/footer.php'; ?>
