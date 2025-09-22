@@ -17,7 +17,7 @@
         <nav class="main-nav">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>/products.php">Ürünler</a></li>
-                <li><a href="#">Mağazalar</a></li>
+<li><a href="<?php echo SITE_URL; ?>/stores.php">Mağazalar</a></li>
                 
                 <?php if (isset($_SESSION['user_id'])): // Kullanıcı giriş yapmışsa burası çalışır ?>
                     
