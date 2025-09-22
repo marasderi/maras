@@ -120,7 +120,7 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAl
                 <?php foreach ($products as $product): ?>
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="https://via.placeholder.com/300x300.png?text=Deri+Urun" alt="<?php echo htmlspecialchars($product['name']); ?>">
+<img src="<?php echo SITE_URL . '/uploads/products/' . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                         </div>
                         <div class="product-info">
                             <span class="product-category"><?php echo htmlspecialchars($product['category_name']); ?></span>
