@@ -120,6 +120,12 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name ASC")->fetchAl
                 <?php foreach ($products as $product): ?>
                     <div class="product-card">
                         <div class="product-image">
+                               <?php if (isset($_SESSION['user_id'])): // Sadece giriş yapmışsa butonu göster ?>
+    <button class="favorite-btn <?php echo in_array($product['id'], $user_favorites) ? 'active' : ''; ?>" 
+            data-product-id="<?php echo $product['id']; ?>">
+        ❤
+    </button>
+<?php endif; ?> 
 <img src="<?php echo SITE_URL . '/uploads/products/' . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                         </div>
                         <div class="product-info">
