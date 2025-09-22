@@ -16,7 +16,7 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="#">Ürünler</a></li>
+<li><a href="<?php echo SITE_URL; ?>/products.php">Ürünler</a></li>
                 <li><a href="#">Mağazalar</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li>Merhaba, <?php echo htmlspecialchars($_SESSION['username']); ?>!</li>
