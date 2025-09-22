@@ -31,8 +31,11 @@ $products = $product_stmt->fetchAll();
 
 <div class="store-profile-header">
     <div class="store-profile-logo">
-         <img src="https://via.placeholder.com/200x200.png?text=<?php echo urlencode(substr($store['store_name'], 0, 1)); ?>" alt="<?php echo htmlspecialchars($store['store_name']); ?> Logo">
-    </div>
+<?php if (!empty($store['store_logo']) && file_exists('uploads/logos/' . $store['store_logo'])): ?>
+    <img src="<?php echo SITE_URL . '/uploads/logos/' . htmlspecialchars($store['store_logo']); ?>" alt="<?php echo htmlspecialchars($store['store_name']); ?> Logo">
+<?php else: ?>
+    <img src="https://via.placeholder.com/200x200.png?text=<?php echo urlencode(substr($store['store_name'], 0, 1)); ?>" alt="<?php echo htmlspecialchars($store['store_name']); ?> Logo">
+<?php endif; ?>    </div>
     <div class="store-profile-info">
         <h1><?php echo htmlspecialchars($store['store_name']); ?></h1>
         <p><?php echo nl2br(htmlspecialchars($store['store_description'])); ?></p>
