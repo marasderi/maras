@@ -388,3 +388,26 @@ table th {
 }
 .admin-content-split .table-container { flex: 2; }
 .admin-content-split .form-container-split { flex: 1; }
+/* === USER MANAGEMENT ROLE FORM === */
+.role-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.role-form select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.role-form button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.role-form button:hover {
+    background-color: #218838;
+}
