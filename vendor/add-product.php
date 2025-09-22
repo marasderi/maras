@@ -13,42 +13,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $external_url = trim($_POST['external_url']);
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
-    // Basit doğrulama
+    // ... (Diğer doğrulamalar aynı kalıyor)
     if (empty($name)) $errors[] = "Ürün adı zorunludur.";
     if (empty($price) || !is_numeric($price)) $errors[] = "Geçerli bir fiyat girin.";
     if (empty($category_id)) $errors[] = "Bir kategori seçmelisiniz.";
     if (empty($external_url)) $errors[] = "Satış URL'si zorunludur.";
-    if (!filter_var($external_url, FILTER_VALIDATE_URL)) $errors[] = "Geçerli bir URL girin.";
+    
+    // --- RESİM YÜKLEME MANTIĞI ---
+    $image_name = '';
+    if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] == 0) {
+        $target_dir = __DIR__ . "/../uploads/products/";
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+        $file_extension = strtolower(pathinfo($_FILES['product_image']['name'], PATHINFO_EXTENSION));
+        
+        // Benzersiz bir dosya adı oluştur
+        $image_name = uniqid('prod_') . '.' . $file_extension;
+        $target_file = $target_dir . $image_name;
+
+        // Dosya tipi kontrolü
+        if (!in_array($file_extension, $allowed_types)) {
+            $errors[] = "Geçersiz dosya tipi. Sadece JPG, JPEG, PNG ve GIF dosyalarına izin verilir.";
+        }
+        // Dosya boyutu kontrolü (örn: 5MB)
+        if ($_FILES['product_image']['size'] > 5 * 1024 * 1024) {
+            $errors[] = "Dosya boyutu çok büyük. Maksimum 5MB olabilir.";
+        }
+    } else {
+        $errors[] = "Ürün resmi zorunludur.";
+    }
+
 
     if (empty($errors)) {
-        // TODO: Resim yükleme işlemi buraya gelecek. Şimdilik sabit bir değer atıyoruz.
-        $image_name = 'default-product.jpg';
-
-        $sql = "INSERT INTO products (vendor_id, category_id, name, description, price, color, image, external_url, is_active) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $pdo->prepare($sql);
-        
-        try {
-            $stmt->execute([
-                $current_vendor_id, 
-                $category_id, 
-                $name, 
-                $description, 
-                $price, 
-                $color, 
-                $image_name, 
-                $external_url, 
-                $is_active
-            ]);
-            header("Location: products.php?status=added");
-            exit();
-        } catch (PDOException $e) {
-            $errors[] = "Veritabanı hatası: " . $e->getMessage();
+        // Resmi sunucuya taşı
+        if (move_uploaded_file($_FILES['product_image']['tmp_name'], $target_file)) {
+            $sql = "INSERT INTO products (vendor_id, category_id, name, description, price, color, image, external_url, is_active) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            try {
+                $stmt->execute([ $current_vendor_id, $category_id, $name, $description, $price, $color, $image_name, $external_url, $is_active ]);
+                header("Location: products.php?status=added");
+                exit();
+            } catch (PDOException $e) {
+                $errors[] = "Veritabanı hatası: " . $e->getMessage();
+            }
+        } else {
+            $errors[] = "Resim yüklenirken bir hata oluştu.";
         }
     }
 }
 
-// Kategorileri formda listelemek için çek
 $categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
 ?>
 
@@ -61,10 +74,16 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
 <?php endif; ?>
 
 <form class="vendor-form" action="add-product.php" method="POST" enctype="multipart/form-data">
+    
     <div class="form-group">
         <label for="name">Ürün Adı</label>
         <input type="text" id="name" name="name" required>
     </div>
+    <div class="form-group">
+        <label for="product_image">Ürün Resmi</label>
+        <input type="file" id="product_image" name="product_image" required>
+    </div>
+    
     <div class="form-group">
         <label for="description">Açıklama</label>
         <textarea id="description" name="description" rows="5"></textarea>
@@ -97,6 +116,5 @@ $categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
     
     <button type="submit" class="btn">Ürünü Ekle</button>
 </form>
-
 
 <?php include 'footer.php'; ?>
