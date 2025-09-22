@@ -16,14 +16,25 @@
         </div>
         <nav class="main-nav">
             <ul>
-<li><a href="<?php echo SITE_URL; ?>/products.php">Ürünler</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/products.php">Ürünler</a></li>
                 <li><a href="#">Mağazalar</a></li>
-                <?php if (isset($_SESSION['user_id'])): ?>
+                
+                <?php if (isset($_SESSION['user_id'])): // Kullanıcı giriş yapmışsa burası çalışır ?>
+                    
+                    <?php // --- YENİ EKLENEN KISIM BAŞLANGIÇ --- ?>
+                    <?php if ($_SESSION['user_role'] === 'vendor'): // Giriş yapan kullanıcının rolü 'vendor' ise bu linki göster ?>
+                        <li><a href="<?php echo SITE_URL; ?>/vendor/">Satıcı Paneli</a></li>
+                    <?php endif; ?>
+                    <?php // --- YENİ EKLENEN KISIM BİTİŞ --- ?>
+
                     <li>Merhaba, <?php echo htmlspecialchars($_SESSION['username']); ?>!</li>
                     <li><a href="<?php echo SITE_URL; ?>/logout.php">Çıkış Yap</a></li>
-                <?php else: ?>
+
+                <?php else: // Kullanıcı giriş yapmamışsa burası çalışır ?>
+                    
                     <li><a href="<?php echo SITE_URL; ?>/login.php">Giriş Yap</a></li>
                     <li><a href="<?php echo SITE_URL; ?>/register.php" class="btn-register">Kayıt Ol</a></li>
+                
                 <?php endif; ?>
             </ul>
         </nav>
