@@ -19,8 +19,12 @@ $stores = $pdo->query("SELECT * FROM vendors ORDER BY store_name ASC")->fetchAll
             <a href="store-profile.php?id=<?php echo $store['id']; ?>" class="store-card-link">
                 <div class="store-card">
                     <div class="store-logo">
-                        <img src="https://via.placeholder.com/150x150.png?text=<?php echo urlencode(substr($store['store_name'], 0, 1)); ?>" alt="<?php echo htmlspecialchars($store['store_name']); ?> Logo">
-                    </div>
+// Şu şekilde değiştirin (eğer logo yoksa baş harfini göstermeye devam etsin):
+<?php if (!empty($store['store_logo']) && file_exists('uploads/logos/' . $store['store_logo'])): ?>
+    <img src="<?php echo SITE_URL . '/uploads/logos/' . htmlspecialchars($store['store_logo']); ?>" alt="<?php echo htmlspecialchars($store['store_name']); ?> Logo">
+<?php else: ?>
+    <img src="https://via.placeholder.com/150x150.png?text=<?php echo urlencode(substr($store['store_name'], 0, 1)); ?>" alt="<?php echo htmlspecialchars($store['store_name']); ?> Logo">
+<?php endif; ?>                    </div>
                     <div class="store-info">
                         <h3><?php echo htmlspecialchars($store['store_name']); ?></h3>
                         <p><?php echo htmlspecialchars(substr($store['store_description'], 0, 100)) . '...'; ?></p>
