@@ -324,3 +324,27 @@ table th {
     gap: 10px;
 }
 .form-check input { width: auto; }
+/* === FILTER FORM STYLES === */
+.filter-form input[type="search"],
+.filter-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+}
+.filter-form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+.sidebar .filter-group ul li.active a {
+    font-weight: 700;
+    color: var(--color-accent);
+}
+.sidebar .filter-group ul li.active {
+    background-color: #f8d7da33;
+    border-left: 3px solid var(--color-accent);
+}
+.sidebar .filter-group ul li.active a {
+    padding-left: 10px;
+}
