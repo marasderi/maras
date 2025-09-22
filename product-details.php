@@ -28,7 +28,7 @@ if (!$product) {
 
 <div class="product-detail-container">
     <div class="product-detail-image">
-        <img src="https://via.placeholder.com/600x600.png?text=Deri+Urun" alt="<?php echo htmlspecialchars($product['name']); ?>">
+<img src="<?php echo SITE_URL . '/uploads/products/' . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
     </div>
     <div class="product-detail-info">
         <span class="product-category"><?php echo htmlspecialchars($product['category_name']); ?></span>
