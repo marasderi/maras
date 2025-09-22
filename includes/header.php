@@ -8,10 +8,26 @@
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
 </head>
 <body>
-<header>
-    <div class="container">
-        <h1>Deri Pazarı</h1>
-        <p>El emeği, göz nuru deri ürünler...</p>
+
+<header class="main-header">
+    <div class="container header-content">
+        <div class="logo">
+            <a href="<?php echo SITE_URL; ?>">Deri Pazarı</a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#">Ürünler</a></li>
+                <li><a href="#">Mağazalar</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li>Merhaba, <?php echo htmlspecialchars($_SESSION['username']); ?>!</li>
+                    <li><a href="<?php echo SITE_URL; ?>/logout.php">Çıkış Yap</a></li>
+                <?php else: ?>
+                    <li><a href="<?php echo SITE_URL; ?>/login.php">Giriş Yap</a></li>
+                    <li><a href="<?php echo SITE_URL; ?>/register.php" class="btn-register">Kayıt Ol</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
     </div>
 </header>
+
 <main class="container">
