@@ -7,7 +7,7 @@
     <title>Deri Pazarı - Kaliteli El İşi Ürünler</title>
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
 </head>
-<body>
+<body data-site-url="<?php echo SITE_URL; ?>">
 
 <header class="main-header">
     <div class="container header-content">
