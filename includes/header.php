@@ -42,5 +42,14 @@
         </nav>
     </div>
 </header>
+    <?php
+// Eğer kullanıcı giriş yapmışsa, favori ürün ID'lerini bir diziye alalım
+$user_favorites = [];
+if (isset($_SESSION['user_id'])) {
+    $fav_stmt = $pdo->prepare("SELECT product_id FROM favorites WHERE user_id = ?");
+    $fav_stmt->execute([$_SESSION['user_id']]);
+    $user_favorites = $fav_stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+}
+?>
 
 <main class="container">
