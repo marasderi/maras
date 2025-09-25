@@ -2,6 +2,8 @@ marasderi@gmail.com
 
 #Tüm dosyaları hosting hesabınıza yükleyin.
 
+# veritabanı oluşturmayı unutmayın
+
 #Tarayıcınızdan domain.com/install.php adresini açın.
 
 #İstenen bilgileri girerek kurulumu tamamlayın.
