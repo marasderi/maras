@@ -594,3 +594,136 @@ table th {
     font-weight: 700;
     color: var(--color-primary);
 }
+/* === GENEL SAYFA VE WIDGET STİLLERİ (YENİ) === */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1523309375636-b3f81150f2a0?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 40px;
+}
+.hero-section h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    font-family: var(--font-headings);
+}
+.hero-section p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+.hero-btn {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+.hero-btn:hover {
+    background-color: var(--color-white);
+    color: var(--color-text);
+    transform: translateY(-3px);
+}
+
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+.home-widget {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+.widget-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.widget-header .icon { font-size: 20px; }
+.widget-header h3 { margin: 0; font-family: var(--font-headings); }
+
+.widget-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+.widget-list li a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 5px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: background-color 0.2s ease;
+}
+.widget-list li a:hover {
+    background-color: var(--color-background);
+}
+.widget-list img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.item-info { display: flex; flex-direction: column; }
+.item-info span { font-size: 13px; color: #777; }
+
+.widget-footer {
+    margin-top: 15px;
+    text-align: right;
+}
+.widget-footer a {
+    text-decoration: none;
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+/* === YENİ PANEL STİLLERİ === */
+.panel-welcome-header {
+    background: linear-gradient(135deg, #4E423A, #3A322C);
+    color: white;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+    text-align: center;
+}
+.panel-welcome-header h1 {
+    margin: 0 0 10px 0;
+    font-family: var(--font-headings);
+    font-size: 2.5em;
+}
+.panel-welcome-header p {
+    margin: 0;
+    font-size: 1.1em;
+    opacity: 0.8;
+}
+
+/* Stat-card için yeni stil ve hover efekti */
+.stats-grid a.stat-card {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+.stats-grid a.stat-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background-color: var(--color-primary);
+    color: white;
+}
+.stats-grid a.stat-card:hover h3,
+.stats-grid a.stat-card:hover p {
+    color: white;
+}
+
