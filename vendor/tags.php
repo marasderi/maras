@@ -1,49 +1,92 @@
 <?php
-// Veritabanı ve session'ları başlat
-require_once __DIR__ . '/../config/database.php';
+include 'header.php';
 
-// --- ERİŞİM KONTROLÜ ---
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'vendor') {
-    header("Location: " . SITE_URL . "/login.php");
-    exit();
+$success_message = '';
+$errors = [];
+
+// Form gönderildiyse
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tags_list'])) {
+    $tags_input = trim($_POST['tags_list']);
+
+    if (empty($tags_input)) {
+        $errors[] = "Lütfen eklemek için en az bir etiket girin.";
+    } else {
+        // Etiketleri virgül, noktalı virgül veya yeni satıra göre ayır
+        $tags_array = preg_split('/[,\n\r;]+/', $tags_input);
+        
+        $inserted_count = 0;
+        $skipped_count = 0;
+
+        // Her bir etiketi veritabanına eklemeyi dene
+        foreach ($tags_array as $tag_name) {
+            $tag_name = trim($tag_name);
+
+            if (!empty($tag_name)) {
+                // Basit bir slug oluştur
+                $slug = strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', $tag_name));
+                
+                // IGNORE sayesinde, eğer etiket zaten varsa hata vermez ve eklemez.
+                $stmt = $pdo->prepare("INSERT IGNORE INTO tags (name, slug) VALUES (?, ?)");
+                $stmt->execute([$tag_name, $slug]);
+
+                // Etkilenen satır sayısı 1 ise, yeni etiket eklenmiştir.
+                if ($stmt->rowCount() > 0) {
+                    $inserted_count++;
+                } else {
+                    $skipped_count++;
+                }
+            }
+        }
+        $success_message = "İşlem tamamlandı! {$inserted_count} yeni etiket eklendi, {$skipped_count} mevcut etiket atlandı.";
+    }
 }
 
-$current_user_id = $_SESSION['user_id'];
-$stmt = $pdo->prepare("SELECT id FROM vendors WHERE user_id = ?");
-$stmt->execute([$current_user_id]);
-$vendor = $stmt->fetch();
-$current_vendor_id = $vendor['id'] ?? null;
-
-if (!$current_vendor_id) {
-    die("HATA: Satıcı bilgileri bulunamadı.");
-}
+// Mevcut tüm etiketleri listelemek için çek
+$all_tags = $pdo->query("SELECT * FROM tags ORDER BY name ASC")->fetchAll();
 ?>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satıcı Paneli - Deri Pazarı</title>
-    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
-</head>
-<body>
 
-<header class="main-header">
-    <div class="container header-content">
-        <div class="logo">
-            <a href="<?php echo SITE_URL; ?>/vendor/">Satıcı Paneli</a>
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="<?php echo SITE_URL; ?>/vendor/products.php">Ürünlerim</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/vendor/tags.php">Etiket Yönetimi</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/vendor/settings.php">Ayarlar</a></li>
-                <li><a href="<?php echo SITE_URL; ?>" target="_blank">Siteyi Görüntüle</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/logout.php">Çıkış Yap</a></li>
-            </ul>
-        </nav>
+<div class="vendor-page-header">
+    <h1>Etiket Yönetimi</h1>
+</div>
+
+<?php if ($success_message): ?>
+    <div class="alert alert-success"><p><?php echo $success_message; ?></p></div>
+<?php endif; ?>
+<?php if (!empty($errors)): ?>
+    <div class="alert alert-danger"><?php foreach($errors as $error) { echo "<p>$error</p>"; } ?></div>
+<?php endif; ?>
+
+
+<div class="admin-content-split">
+    <!-- Sol Taraf: Yeni Etiket Ekleme Formu -->
+    <div class="form-container-split">
+        <h3>Toplu Etiket Ekle</h3>
+        <p>Elindeki etiket listesini aşağıdaki kutuya yapıştır. Etiketleri virgül (,), noktalı virgül (;) veya her birini yeni bir satıra yazarak ayırabilirsin.</p>
+        <form action="tags.php" method="POST" class="vendor-form">
+            <div class="form-group">
+                <label for="tags_list">Etiket Listesi</label>
+                <textarea name="tags_list" id="tags_list" rows="15" placeholder="Örnek:
+deri ceket,
+erkek giyim,
+el yapımı; hakiki deri"></textarea>
+            </div>
+            <button type="submit" class="btn">Etiketleri Ekle</button>
+        </form>
     </div>
-</header>
 
-<main class="container">
-<div class="vendor-panel-container">
+    <!-- Sağ Taraf: Mevcut Etiketler Listesi -->
+    <div class="table-container">
+         <h3>Mevcut Etiketler (<?php echo count($all_tags); ?> adet)</h3>
+         <div class="tag-cloud-box">
+            <?php if ($all_tags): ?>
+                <?php foreach ($all_tags as $tag): ?>
+                    <span class="tag-item"><?php echo htmlspecialchars($tag['name']); ?></span>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Sistemde henüz hiç etiket bulunmuyor.</p>
+            <?php endif; ?>
+         </div>
+    </div>
+</div>
+
+<?php include 'footer.php'; ?>
