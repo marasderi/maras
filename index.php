@@ -67,7 +67,7 @@ $top_favorites = $top_favorites_stmt->fetchAll();
                 </a>
             </li>
             <?php endforeach; else: ?>
-                <li><p>Henüz öne çıkan mağaza yok.</p></li>
+                <li><p style="padding: 10px;">Henüz öne çıkan mağaza yok.</p></li>
             <?php endif; ?>
         </ul>
         <div class="widget-footer">
@@ -92,7 +92,7 @@ $top_favorites = $top_favorites_stmt->fetchAll();
                 </a>
             </li>
             <?php endforeach; else: ?>
-                <li><p>Henüz beğenilen ürün yok.</p></li>
+                <li><p style="padding: 10px;">Henüz beğenilen ürün yok.</p></li>
             <?php endif; ?>
         </ul>
     </div>
@@ -114,7 +114,7 @@ $top_favorites = $top_favorites_stmt->fetchAll();
                 </a>
             </li>
             <?php endforeach; else: ?>
-                <li><p>Henüz yeni ürün eklenmemiş.</p></li>
+                <li><p style="padding: 10px;">Henüz yeni ürün eklenmemiş.</p></li>
             <?php endif; ?>
         </ul>
         <div class="widget-footer">
